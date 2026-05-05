@@ -6,7 +6,7 @@
 <title>Shree Ram Fast Food</title>
 
 <style>
-body { font-family: Arial; margin:0; }
+body { font-family: Arial; margin:0; background:#f8f8f8; }
 
 header {
   background:#ff4d4d;
@@ -16,16 +16,46 @@ header {
   font-size:22px;
 }
 
+.hero {
+  text-align:center;
+  padding:20px;
+  background:white;
+}
+
+.hero img {
+  width:90%;
+  max-width:400px;
+  border-radius:10px;
+}
+
+.hero h1 { margin:10px 0; }
+.hero p { color:#555; }
+
 .container { padding:15px; }
+
+.badges {
+  display:flex;
+  justify-content:space-around;
+  margin:15px 0;
+}
+
+.badge {
+  background:white;
+  padding:10px;
+  border-radius:8px;
+  font-size:14px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
 
 .item {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  border:1px solid #ddd;
+  background:white;
   margin:10px 0;
   padding:10px;
-  border-radius:8px;
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
 .item img {
@@ -46,8 +76,9 @@ button {
 
 .cart {
   margin-top:20px;
-  border-top:2px solid #ddd;
-  padding-top:10px;
+  background:white;
+  padding:15px;
+  border-radius:10px;
 }
 
 input {
@@ -64,6 +95,7 @@ input {
   color:white;
   border:none;
   border-radius:5px;
+  font-size:16px;
 }
 
 .toast {
@@ -77,6 +109,13 @@ input {
   border-radius:5px;
   display:none;
 }
+
+.footer {
+  text-align:center;
+  padding:15px;
+  font-size:14px;
+  color:#555;
+}
 </style>
 </head>
 
@@ -84,7 +123,19 @@ input {
 
 <header>Shree Ram Fast Food</header>
 
+<div class="hero">
+  <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836">
+  <h1>Best Fast Food in Your Area 🚀</h1>
+  <p>Order Fresh & Hot Food Instantly</p>
+</div>
+
 <div class="container">
+
+<div class="badges">
+  <div class="badge">⭐ 4.5 Rating</div>
+  <div class="badge">🚚 Fast Delivery</div>
+  <div class="badge">🔥 Fresh Food</div>
+</div>
 
 <h2>Menu</h2>
 
@@ -130,6 +181,11 @@ input {
 
 </div>
 
+<div class="footer">
+  This is Basic Website Plan – ₹4999 <br>
+  Upgrade Available for Online Ordering 🚀
+</div>
+
 <div id="toast" class="toast">Item added to cart</div>
 
 <script>
@@ -170,8 +226,7 @@ function getLocation(){
       userLocation = "https://maps.google.com/?q="+lat+","+lon;
       document.getElementById("locationText").innerText="Location Added";
 
-      // simple distance logic (assume 2 km avg)
-      let distance = 2; 
+      let distance = 2;
       let time = distance * 15;
 
       document.getElementById("time").innerText = time + " min";
