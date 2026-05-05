@@ -6,7 +6,7 @@
 <title>Shree Ram Fast Food</title>
 
 <style>
-body { font-family: Arial; margin:0; background:#fff; }
+body { font-family: Arial; margin:0; }
 
 header {
   background:#ff4d4d;
@@ -22,9 +22,9 @@ header {
   display:flex;
   align-items:center;
   justify-content:space-between;
+  border:1px solid #ddd;
   margin:10px 0;
   padding:10px;
-  border:1px solid #ddd;
   border-radius:8px;
 }
 
@@ -32,13 +32,9 @@ header {
   width:60px;
   height:60px;
   border-radius:8px;
-  object-fit:cover;
 }
 
-.item-info {
-  flex:1;
-  margin-left:10px;
-}
+.item-info { flex:1; margin-left:10px; }
 
 button {
   background:#ff4d4d;
@@ -50,23 +46,26 @@ button {
 
 .cart {
   margin-top:20px;
-  padding:10px;
   border-top:2px solid #ddd;
+  padding-top:10px;
+}
+
+input {
+  width:100%;
+  padding:8px;
+  margin:5px 0;
 }
 
 .order-btn {
-  display:block;
-  margin-top:15px;
+  width:100%;
+  margin-top:10px;
   padding:12px;
-  text-align:center;
   background:#ff4d4d;
   color:white;
   border:none;
   border-radius:5px;
-  font-size:16px;
 }
 
-/* Toast message */
 .toast {
   position:fixed;
   bottom:20px;
@@ -87,47 +86,46 @@ button {
 
 <div class="container">
 
-<h2>🍔 Menu</h2>
+<h2>Menu</h2>
 
 <div class="item">
   <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd">
-  <div class="item-info">
-    <div>Burger - ₹50</div>
-  </div>
-  <button onclick="addItem('Burger ₹50')">Add</button>
+  <div class="item-info">Burger - ₹50</div>
+  <button onclick="addItem('Burger',50)">Add</button>
 </div>
 
 <div class="item">
   <img src="https://images.unsplash.com/photo-1594007654729-407eedc4be65">
-  <div class="item-info">
-    <div>Pizza - ₹120</div>
-  </div>
-  <button onclick="addItem('Pizza ₹120')">Add</button>
+  <div class="item-info">Pizza - ₹120</div>
+  <button onclick="addItem('Pizza',120)">Add</button>
 </div>
 
 <div class="item">
   <img src="https://images.unsplash.com/photo-1604908176997-4311e3b28c63">
-  <div class="item-info">
-    <div>Sandwich - ₹40</div>
-  </div>
-  <button onclick="addItem('Sandwich ₹40')">Add</button>
+  <div class="item-info">Sandwich - ₹40</div>
+  <button onclick="addItem('Sandwich',40)">Add</button>
 </div>
 
 <div class="item">
   <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90">
-  <div class="item-info">
-    <div>Cold Drink - ₹30</div>
-  </div>
-  <button onclick="addItem('Cold Drink ₹30')">Add</button>
+  <div class="item-info">Cold Drink - ₹30</div>
+  <button onclick="addItem('Cold Drink',30)">Add</button>
 </div>
 
 <div class="cart">
-  <h3>🛒 Your Cart</h3>
+  <h3>Your Cart</h3>
   <ul id="cartList"></ul>
+  <h3>Total: ₹<span id="total">0</span></h3>
 
-  <button class="order-btn" onclick="placeOrder()">
-    Order Now
-  </button>
+  <input type="text" id="name" placeholder="Your Name">
+  <input type="text" id="phone" placeholder="Your Phone Number">
+
+  <button onclick="getLocation()">📍 Use My Location</button>
+  <p id="locationText"></p>
+
+  <p>Estimated Delivery Time: <span id="time">--</span></p>
+
+  <button class="order-btn" onclick="placeOrder()">Order Now</button>
 </div>
 
 </div>
@@ -136,42 +134,71 @@ button {
 
 <script>
 let cart = [];
+let total = 0;
+let userLocation = "";
 
-function showToast() {
-  let toast = document.getElementById("toast");
-  toast.style.display = "block";
-  setTimeout(() => {
-    toast.style.display = "none";
-  }, 1500);
+function showToast(){
+  let t = document.getElementById("toast");
+  t.style.display="block";
+  setTimeout(()=>{t.style.display="none"},1500);
 }
 
-function addItem(item) {
-  cart.push(item);
+function addItem(name,price){
+  cart.push(name + " ₹" + price);
+  total += price;
   displayCart();
   showToast();
 }
 
-function displayCart() {
+function displayCart(){
   let list = document.getElementById("cartList");
-  list.innerHTML = "";
-
-  cart.forEach(i => {
-    let li = document.createElement("li");
-    li.innerText = i;
+  list.innerHTML="";
+  cart.forEach(i=>{
+    let li=document.createElement("li");
+    li.innerText=i;
     list.appendChild(li);
   });
+  document.getElementById("total").innerText=total;
 }
 
-function placeOrder() {
-  if(cart.length === 0){
-    alert("Cart is empty!");
+function getLocation(){
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(pos=>{
+      let lat = pos.coords.latitude;
+      let lon = pos.coords.longitude;
+
+      userLocation = "https://maps.google.com/?q="+lat+","+lon;
+      document.getElementById("locationText").innerText="Location Added";
+
+      // simple distance logic (assume 2 km avg)
+      let distance = 2; 
+      let time = distance * 15;
+
+      document.getElementById("time").innerText = time + " min";
+    });
+  }
+}
+
+function placeOrder(){
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let time = document.getElementById("time").innerText;
+
+  if(cart.length==0 || name=="" || phone==""){
+    alert("Fill all details!");
     return;
   }
 
-  let message = "Order:%0A" + cart.join("%0A");
-  let number = "918780343199";
+  let message =
+  "New Order:%0A"+
+  "Name: "+name+"%0A"+
+  "Phone: "+phone+"%0A"+
+  "Items:%0A"+cart.join("%0A")+"%0A"+
+  "Total: ₹"+total+"%0A"+
+  "Delivery Time: "+time+"%0A"+
+  "Location: "+userLocation;
 
-  window.open("https://wa.me/" + number + "?text=" + message);
+  window.open("https://wa.me/918780343199?text="+message);
 }
 </script>
 
