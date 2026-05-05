@@ -1,109 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shree Ram Fast Food</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #fff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shree Ram Fast Food</title>
 
-        header {
-            background-color: #ff4d4d;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
+<style>
+body { font-family: Arial; margin:0; background:#fff; }
 
-        .hero {
-            text-align: center;
-            padding: 30px;
-        }
+header {
+  background:#ff4d4d;
+  color:white;
+  text-align:center;
+  padding:15px;
+  font-size:22px;
+}
 
-        .hero img {
-            width: 90%;
-            max-width: 400px;
-            border-radius: 10px;
-        }
+.container { padding:15px; }
 
-        .hero h1 {
-            margin: 15px 0 10px;
-        }
+.item {
+  display:flex;
+  justify-content:space-between;
+  margin:10px 0;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:5px;
+}
 
-        .btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 20px;
-            background-color: #25D366;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+button {
+  background:#ff4d4d;
+  color:white;
+  border:none;
+  padding:5px 10px;
+  border-radius:5px;
+}
 
-        .section {
-            padding: 20px;
-        }
+.cart {
+  margin-top:20px;
+  padding:10px;
+  border-top:2px solid #ddd;
+}
 
-        .section h2 {
-            margin-bottom: 10px;
-        }
-
-        .menu-item {
-            margin: 8px 0;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #f2f2f2;
-            font-size: 14px;
-        }
-    </style>
+.whatsapp {
+  display:block;
+  margin-top:15px;
+  padding:12px;
+  text-align:center;
+  background:#25D366;
+  color:white;
+  text-decoration:none;
+  border-radius:5px;
+}
+</style>
 </head>
+
 <body>
 
-<header>
-    Shree Ram Fast Food
-</header>
+<header>Shree Ram Fast Food</header>
 
-<div class="hero">
-    <img src="https://images.unsplash.com/photo-1604908176997-4311e3b28c63" alt="Food Image">
-    <h1>Tasty & Fresh Fast Food</h1>
-    <p>Order on WhatsApp now!</p>
-    <a class="btn" href="https://wa.me/919999999999">Order on WhatsApp</a>
+<div class="container">
+
+<h2>🍔 Menu</h2>
+
+<div class="item">
+  <span>Burger - ₹50</span>
+  <button onclick="addItem('Burger ₹50')">Add</button>
 </div>
 
-<div class="section">
-    <h2>📍 Location</h2>
-    <p>Near Bus Stand, Ahmedabad</p>
-    <iframe 
-        src="https://maps.google.com/maps?q=ahmedabad&t=&z=13&ie=UTF8&iwloc=&output=embed" 
-        width="100%" height="200" style="border:0;">
-    </iframe>
+<div class="item">
+  <span>Pizza - ₹120</span>
+  <button onclick="addItem('Pizza ₹120')">Add</button>
 </div>
 
-<div class="section">
-    <h2>⏰ Timing</h2>
-    <p>Monday - Sunday: 10:00 AM - 10:00 PM</p>
+<div class="item">
+  <span>Sandwich - ₹40</span>
+  <button onclick="addItem('Sandwich ₹40')">Add</button>
 </div>
 
-<div class="section">
-    <h2>🍔 Menu</h2>
-    <div class="menu-item">Burger - ₹50</div>
-    <div class="menu-item">Pizza - ₹120</div>
-    <div class="menu-item">Sandwich - ₹40</div>
-    <div class="menu-item">Cold Drink - ₹30</div>
+<div class="item">
+  <span>Cold Drink - ₹30</span>
+  <button onclick="addItem('Cold Drink ₹30')">Add</button>
 </div>
 
-<div class="footer">
-    © 2026 Shree Ram Fast Food | All Rights Reserved
+<div class="cart">
+  <h3>🛒 Your Order</h3>
+  <ul id="cartList"></ul>
+
+  <a id="orderBtn" class="whatsapp" href="#" target="_blank">
+    Order on WhatsApp
+  </a>
 </div>
+
+</div>
+
+<script>
+let cart = [];
+
+function addItem(item) {
+  cart.push(item);
+  displayCart();
+}
+
+function displayCart() {
+  let list = document.getElementById("cartList");
+  list.innerHTML = "";
+
+  cart.forEach(i => {
+    let li = document.createElement("li");
+    li.innerText = i;
+    list.appendChild(li);
+  });
+
+  let message = "Hello, I want to order:%0A" + cart.join("%0A");
+  
+  document.getElementById("orderBtn").href =
+    "https://wa.me/919999999999?text=" + message;
+}
+</script>
 
 </body>
 </html>
